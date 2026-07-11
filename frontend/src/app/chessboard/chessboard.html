@@ -1,0 +1,24 @@
+<div class="container">
+  <!-- <h2>C H E S S</h2> -->
+
+  <div class="board-wrapper">
+    <app-evaluation-bar></app-evaluation-bar>
+    <!-- <div id="myBoard" style="width: 480px"></div> -->
+    <div id="myBoard" style="width: min(70vh, 700px); height: min(70vh, 700px);"></div>
+
+    <div class="info-panel">
+      <app-evaluation></app-evaluation>
+      <app-opening></app-opening>
+      <app-move-history></app-move-history>
+      <!-- <button (click)="resetBoard()">⟳ Reset</button> -->
+      <div class="button-group">
+        <button (click)="openGameManager()" class="save-games-btn">📚 Load / Save</button>
+        <button (click)="resetBoard()">⟳ Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<!-- <app-game-manager></app-game-manager> -->
+<app-game-manager (gameLoaded)="onGameLoaded()"></app-game-manager>

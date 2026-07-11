@@ -1,0 +1,14 @@
+<div class="move-history">
+  <!-- <h3>Move History</h3> -->
+  <div class="moves" id="moveHistoryContainer">
+    @for (pair of movePairs(); track $index) {
+      <div class="move-pair">
+        <span class="move-number">{{ $index + 1 }}.</span>
+        <span class="white-move">{{ pair.white }}</span>
+        @if (pair.black) {
+          <span class="black-move">{{ pair.black }}</span>
+        }
+      </div>
+    }
+  </div>
+</div>
