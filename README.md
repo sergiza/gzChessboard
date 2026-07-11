@@ -38,5 +38,5 @@ API docs (Swagger UI) on [localhost:8080/swagger-ui](http://localhost:8080/swagg
 
 ## Credits
 
-Board UI is [cm-chessboard](https://shaack.com/projekte/cm-chessboard/), game logic is chess.js.\
-Opening data and sounds from Lichess.
+Board UI is [cm-chessboard](https://shaack.com/projekte/cm-chessboard/), game logic is [chess.js](https://github.com/jhlywa/chess.js/).\
+[Opening data](https://github.com/lichess-org/chess-openings) and [sounds](https://github.com/lichess-org/lila/tree/master/public/sound) from Lichess.
