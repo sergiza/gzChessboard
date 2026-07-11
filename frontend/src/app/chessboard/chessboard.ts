@@ -17,8 +17,7 @@ import { ViewChild } from '@angular/core';
   selector: 'app-chessboard',
   standalone: true,
   imports: [CommonModule, MoveHistoryComponent, EvaluationComponent, EvaluationBarComponent, OpeningComponent, GameManagerComponent],
-  templateUrl: './chessboard.html',
-  styleUrl: './chessboard.css'
+  templateUrl: './chessboard.html'
 })
 export class ChessboardComponent implements AfterViewInit {
   @ViewChild(GameManagerComponent) gameManager!: GameManagerComponent;

@@ -6,9 +6,10 @@ import { GameStateService } from '../services/game-state';
   selector: 'app-evaluation',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './evaluation.html',
-  styleUrl: './evaluation.css'
+  templateUrl: './evaluation.html'
 })
 export class EvaluationComponent {
-  evaluation = inject(GameStateService).evaluation;
+  private gameState = inject(GameStateService);
+  evaluation = this.gameState.evaluation;
+  score = this.gameState.evaluationScore;
 }

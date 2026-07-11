@@ -1,90 +1,147 @@
 @if (isOpen()) {
-  <div class="modal-backdrop" (click)="closeModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>{{ selectedFolder() ? selectedFolder()!.name : 'Game Manager' }}</h2>
-        <button class="close-btn" (click)="closeModal()">×</button>
+  <div class="fixed inset-0 z-50 bg-ink/60 backdrop-blur-sm flex items-center justify-center" (click)="closeModal()">
+    <div class="bg-paper rounded-xl w-[90%] max-w-[600px] max-h-[80vh] overflow-hidden flex flex-col shadow-2xl"
+         (click)="$event.stopPropagation()">
+
+      <div class="flex justify-between items-center px-6 py-5 border-b border-board-light">
+        <h2 class="text-2xl font-semibold text-ink">{{ selectedFolder() ? selectedFolder()!.name : 'Game Manager' }}</h2>
+        <button (click)="closeModal()" class="text-muted hover:text-ink transition-colors cursor-pointer">
+          <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+          </svg>
+        </button>
       </div>
 
-      <div class="modal-body">
+      <div class="p-6 overflow-y-auto flex-1">
         @if (error()) {
-          <p class="error-message">{{ error() }}</p>
+          <p class="mb-4 px-3 py-2.5 bg-stop/10 text-stop rounded-md text-sm">{{ error() }}</p>
         }
 
         <!-- FOLDER LIST VIEW -->
         @if (!selectedFolder()) {
-          <div class="folder-view">
-            <div class="create-folder-section">
-              <h3>Create New Folder</h3>
-              <div class="create-folder-form">
-                <input
-                  type="text"
-                  [(ngModel)]="newFolderName"
-                  placeholder="Folder name"
-                  class="folder-input"
-                  (keyup.enter)="createFolder()"
-                />
-                <button (click)="createFolder()" class="create-btn">Create</button>
-              </div>
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold text-ink mb-4">Create New Folder</h3>
+            <div class="flex gap-2.5">
+              <input
+                type="text"
+                [(ngModel)]="newFolderName"
+                placeholder="Folder name"
+                class="flex-1 px-4 py-2.5 text-sm bg-white border-2 border-board-light rounded-md focus:outline-none focus:border-wood transition-colors"
+                (keyup.enter)="createFolder()"
+              />
+              <button (click)="createFolder()"
+                      class="px-5 py-2.5 bg-go hover:bg-go-dark text-white font-medium rounded-md transition-colors cursor-pointer">
+                Create
+              </button>
             </div>
+          </div>
 
-            <div class="folders-section">
-              <h3>Folders ({{ folders().length }})</h3>
-              <div class="folders-list">
-                @for (folder of folders(); track folder.id) {
-                  <div class="folder-item">
-                    <div class="folder-info" (click)="selectFolder(folder)">
-                      <span class="folder-icon">📁</span>
-                      <div class="folder-details">
-                        <span class="folder-name">{{ folder.name }}</span>
-                        <span class="folder-count">{{ folder.gameCount }} games</span>
-                      </div>
-                    </div>
-                    <button (click)="deleteFolder(folder)" class="delete-btn-small">🗑️</button>
+          <h3 class="text-lg font-semibold text-ink mb-4">Folders ({{ folders().length }})</h3>
+          <div class="flex flex-col gap-2.5">
+            @for (folder of folders(); track folder.id) {
+              <div class="flex justify-between items-center p-4 bg-white rounded-lg hover:bg-board-light/40 transition-colors">
+                @if (folderToDelete()?.id === folder.id) {
+                  <span class="text-sm text-ink">
+                    Delete "{{ folder.name }}" and all {{ folder.gameCount }} games inside?
+                  </span>
+                  <div class="flex gap-2 shrink-0">
+                    <button (click)="confirmDeleteFolder()"
+                            class="px-4 py-2 bg-stop hover:bg-stop-dark text-white text-sm font-medium rounded-md transition-colors cursor-pointer">
+                      Delete
+                    </button>
+                    <button (click)="cancelDelete()"
+                            class="px-4 py-2 bg-muted hover:bg-wood-dark text-white text-sm font-medium rounded-md transition-colors cursor-pointer">
+                      Cancel
+                    </button>
                   </div>
-                } @empty {
-                  <p class="no-folders">No folders yet. Create one above!</p>
+                } @else {
+                  <div class="flex items-center gap-3 flex-1 cursor-pointer" (click)="selectFolder(folder)">
+                    <svg viewBox="0 0 24 24" class="w-6 h-6 text-wood" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                    <div class="flex flex-col">
+                      <span class="font-semibold text-ink">{{ folder.name }}</span>
+                      <span class="text-xs text-muted">{{ folder.gameCount }} games</span>
+                    </div>
+                  </div>
+                  <button (click)="askDeleteFolder(folder)"
+                          class="p-1 text-muted hover:text-stop transition-colors cursor-pointer">
+                    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M3 6h18" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg>
+                  </button>
                 }
               </div>
-            </div>
+            } @empty {
+              <p class="text-center text-muted italic py-10">No folders yet. Create one above!</p>
+            }
           </div>
         }
 
         <!-- GAMES IN FOLDER VIEW -->
         @if (selectedFolder()) {
-          <div class="games-view">
-            <button (click)="backToFolders()" class="back-btn">← Back to Folders</button>
+          <button (click)="backToFolders()"
+                  class="flex items-center gap-2 mb-5 px-4 py-2 bg-muted hover:bg-wood-dark text-white text-sm font-medium rounded-md transition-colors cursor-pointer">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m12 19-7-7 7-7" /><path d="M19 12H5" />
+            </svg>
+            Back to Folders
+          </button>
 
-            <div class="save-game-section">
-              <input
-                type="text"
-                [(ngModel)]="newGameName"
-                placeholder="Game name"
-                class="folder-input"
-                (keyup.enter)="saveGame()"
-              />
-              <button (click)="saveGame()" class="save-game-btn">💾 Save Current Game</button>
-            </div>
+          <div class="flex gap-2.5 mb-5">
+            <input
+              type="text"
+              [(ngModel)]="newGameName"
+              placeholder="Game name"
+              class="flex-1 px-4 py-2.5 text-sm bg-white border-2 border-board-light rounded-md focus:outline-none focus:border-wood transition-colors"
+              (keyup.enter)="saveGame()"
+            />
+            <button (click)="saveGame()"
+                    class="flex items-center gap-2 px-4 py-2.5 bg-wood hover:bg-wood-dark text-white font-medium rounded-md transition-colors cursor-pointer">
+              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+                <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" /><path d="M7 3v4a1 1 0 0 0 1 1h7" />
+              </svg>
+              Save Current Game
+            </button>
+          </div>
 
-            <div class="games-section">
-              <h3>Games ({{ games().length }})</h3>
-              <div class="games-list">
-                @for (game of games(); track game.id) {
-                  <div class="game-item">
-                    <div class="game-info">
-                      <span class="game-name">{{ game.name }}</span>
-                      <span class="game-date">{{ game.createdAt | date:'short' }}</span>
-                    </div>
-                    <div class="game-actions">
-                      <button (click)="loadGame(game)" class="load-btn">Load</button>
-                      <button (click)="deleteGame(game)" class="delete-btn">Delete</button>
-                    </div>
+          <h3 class="text-lg font-semibold text-ink mb-4">Games ({{ games().length }})</h3>
+          <div class="flex flex-col gap-2.5">
+            @for (game of games(); track game.id) {
+              <div class="flex justify-between items-center p-4 bg-white rounded-lg hover:bg-board-light/40 transition-colors">
+                @if (gameToDelete()?.id === game.id) {
+                  <span class="text-sm text-ink">Delete "{{ game.name }}"?</span>
+                  <div class="flex gap-2 shrink-0">
+                    <button (click)="confirmDeleteGame()"
+                            class="px-4 py-2 bg-stop hover:bg-stop-dark text-white text-sm font-medium rounded-md transition-colors cursor-pointer">
+                      Delete
+                    </button>
+                    <button (click)="cancelDelete()"
+                            class="px-4 py-2 bg-muted hover:bg-wood-dark text-white text-sm font-medium rounded-md transition-colors cursor-pointer">
+                      Cancel
+                    </button>
                   </div>
-                } @empty {
-                  <p class="no-games">No games in this folder yet</p>
+                } @else {
+                  <div class="flex flex-col gap-1">
+                    <span class="font-medium text-ink">{{ game.name }}</span>
+                    <span class="text-xs text-muted">{{ game.createdAt | date:'short' }}</span>
+                  </div>
+                  <div class="flex gap-2">
+                    <button (click)="loadGame(game)"
+                            class="px-4 py-2 bg-wood hover:bg-wood-dark text-white text-sm font-medium rounded-md transition-colors cursor-pointer">
+                      Load
+                    </button>
+                    <button (click)="askDeleteGame(game)"
+                            class="px-4 py-2 bg-stop hover:bg-stop-dark text-white text-sm font-medium rounded-md transition-colors cursor-pointer">
+                      Delete
+                    </button>
+                  </div>
                 }
               </div>
-            </div>
+            } @empty {
+              <p class="text-center text-muted italic py-10">No games in this folder yet</p>
+            }
           </div>
         }
       </div>

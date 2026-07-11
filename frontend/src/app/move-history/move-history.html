@@ -1,12 +1,11 @@
-<div class="move-history">
-  <!-- <h3>Move History</h3> -->
-  <div class="moves" id="moveHistoryContainer">
+<div class="mb-5">
+  <div class="flex flex-col gap-1 max-h-[300px] overflow-y-auto" id="moveHistoryContainer">
     @for (pair of movePairs(); track $index) {
-      <div class="move-pair">
-        <span class="move-number">{{ $index + 1 }}.</span>
-        <span class="white-move">{{ pair.white }}</span>
+      <div class="flex items-center gap-2 font-mono">
+        <span class="min-w-[25px] text-board-light/80">{{ $index + 1 }}.</span>
+        <span class="min-w-[50px] px-2 py-1 rounded text-sm bg-paper text-ink">{{ pair.white }}</span>
         @if (pair.black) {
-          <span class="black-move">{{ pair.black }}</span>
+          <span class="min-w-[50px] px-2 py-1 rounded text-sm bg-ink text-paper">{{ pair.black }}</span>
         }
       </div>
     }

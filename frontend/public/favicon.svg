@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <style>
+    :root { color: #3d3428; }
+    @media (prefers-color-scheme: dark) { :root { color: #ecdab9; } }
+  </style>
+  <rect x="2" y="2" width="20" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+  <g fill="currentColor">
+    <rect x="4" y="4" width="4" height="4"/><rect x="12" y="4" width="4" height="4"/>
+    <rect x="8" y="8" width="4" height="4"/><rect x="16" y="8" width="4" height="4"/>
+    <rect x="4" y="12" width="4" height="4"/><rect x="12" y="12" width="4" height="4"/>
+    <rect x="8" y="16" width="4" height="4"/><rect x="16" y="16" width="4" height="4"/>
+  </g>
+  <rect x="12" y="8" width="4" height="4" fill="#6b7f4f"/>
+</svg>

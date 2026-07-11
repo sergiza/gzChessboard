@@ -1,10 +1,12 @@
 # gzChessboard
 A chess analysis board. Just a personal full-stack project built in Angular and Java Spring.
 
+![Screenshot](screenshot.png)
+
 ## Features
 - Position evaluation with Stockfish service
 - Opening detection using ECO codes
-- Save and load games as PGN, organized in folders
+- Save and load games as PGN
 
 ## How to run
 ~~~bash
@@ -15,6 +17,7 @@ Then go to [localhost:4200](http://localhost:4200).
 
 <details><summary>Running without Docker</summary>
 
+\\
 Needs Java 25, Node 22 and Stockfish (`sudo apt install stockfish`).
 
 - Backend:

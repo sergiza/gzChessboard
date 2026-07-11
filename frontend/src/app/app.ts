@@ -6,8 +6,7 @@ import { NavbarComponent } from './navbar/navbar';
 @Component({
   selector: 'app-root',
   imports: [ChessboardComponent, NavbarComponent],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  templateUrl: './app.html'
 })
 export class App {
   title = 'gzChessboard';

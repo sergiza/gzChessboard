@@ -5,8 +5,7 @@ import { GameStateService } from '../services/game-state';
   selector: 'app-move-history',
   standalone: true,
   imports: [],
-  templateUrl: './move-history.html',
-  styleUrl: './move-history.css'
+  templateUrl: './move-history.html'
 })
 export class MoveHistoryComponent {
   private gameState = inject(GameStateService);

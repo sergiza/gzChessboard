@@ -1,4 +1,6 @@
-<div class="evaluation">
-  <h3></h3>
-  <div class="eval-score">{{ evaluation() }}</div>
+<div class="mb-5">
+  <div class="text-4xl font-bold text-center"
+       [class]="score() >= 0 ? 'text-paper text-outline-dark' : 'text-ink text-outline-light'">
+    {{ evaluation() }}
+  </div>
 </div>

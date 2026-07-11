@@ -1,9 +1,6 @@
-<div class="opening">
-  <!-- <h3>Opening</h3> -->
-  <div class="opening-info">
-    @if (eco()) {
-      <span class="eco">{{ eco() }}</span>
-    }
-    <p class="opening-name">{{ openingName() }}</p>
-  </div>
+<div class="flex items-center gap-2.5">
+  @if (eco()) {
+    <span class="bg-ink text-board-light px-2.5 py-1 rounded text-xs font-bold">{{ eco() }}</span>
+  }
+  <p class="text-base font-medium text-paper leading-snug">{{ openingName() }}</p>
 </div>

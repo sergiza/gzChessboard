@@ -6,8 +6,7 @@ import { BackendApiService } from '../services/backend-api';
   selector: 'app-opening',
   standalone: true,
   imports: [],
-  templateUrl: './opening.html',
-  styleUrl: './opening.css'
+  templateUrl: './opening.html'
 })
 export class OpeningComponent {
   private gameState = inject(GameStateService);

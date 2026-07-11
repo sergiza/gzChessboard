@@ -8,8 +8,7 @@ import { GameStateService } from '../services/game-state';
   selector: 'app-game-manager',
   standalone: true,
   imports: [DatePipe, FormsModule],
-  templateUrl: './game-manager.html',
-  styleUrl: './game-manager.css'
+  templateUrl: './game-manager.html'
 })
 export class GameManagerComponent {
   @Output() close = new EventEmitter<void>();
@@ -25,18 +24,23 @@ export class GameManagerComponent {
   selectedFolder = signal<Folder | null>(null);
   games = signal<SavedGame[]>([]);
 
+  folderToDelete = signal<Folder | null>(null);
+  gameToDelete = signal<SavedGame | null>(null);
+
   newFolderName = '';
   newGameName = '';
 
   open() {
     this.isOpen.set(true);
     this.error.set('');
+    this.cancelDelete();
     this.loadFolders();
   }
 
   closeModal() {
     this.isOpen.set(false);
     this.selectedFolder.set(null);
+    this.cancelDelete();
     this.close.emit();
   }
 
@@ -65,18 +69,45 @@ export class GameManagerComponent {
     });
   }
 
-  deleteFolder(folder: Folder) {
-    if (!confirm(`Delete folder "${folder.name}" and all ${folder.gameCount} games inside?`)) return;
+  askDeleteFolder(folder: Folder) {
+    this.folderToDelete.set(folder);
+  }
 
+  askDeleteGame(game: SavedGame) {
+    this.gameToDelete.set(game);
+  }
+
+  cancelDelete() {
+    this.folderToDelete.set(null);
+    this.gameToDelete.set(null);
+  }
+
+  confirmDeleteFolder() {
+    const folder = this.folderToDelete();
+    if (!folder) return;
+
+    this.folderToDelete.set(null);
     this.api.deleteFolder(folder.id).subscribe({
       next: () => this.loadFolders(),
       error: () => this.error.set('Could not delete folder')
     });
   }
 
+  confirmDeleteGame() {
+    const game = this.gameToDelete();
+    if (!game) return;
+
+    this.gameToDelete.set(null);
+    this.api.deleteGame(game.id).subscribe({
+      next: () => this.loadGames(this.selectedFolder()!.id),
+      error: () => this.error.set('Could not delete game')
+    });
+  }
+
   selectFolder(folder: Folder) {
     this.selectedFolder.set(folder);
     this.error.set('');
+    this.cancelDelete();
     this.loadGames(folder.id);
   }
 
@@ -84,6 +115,7 @@ export class GameManagerComponent {
     this.selectedFolder.set(null);
     this.games.set([]);
     this.error.set('');
+    this.cancelDelete();
     this.loadFolders();
   }
 
@@ -117,14 +149,5 @@ export class GameManagerComponent {
     }
     this.gameLoaded.emit();
     this.closeModal();
-  }
-
-  deleteGame(game: SavedGame) {
-    if (!confirm(`Delete "${game.name}"?`)) return;
-
-    this.api.deleteGame(game.id).subscribe({
-      next: () => this.loadGames(this.selectedFolder()!.id),
-      error: () => this.error.set('Could not delete game')
-    });
   }
 }

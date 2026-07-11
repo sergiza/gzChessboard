@@ -1,7 +1,40 @@
+@import "tailwindcss";
+
+/* Palette derived from the cm-chessboard wood squares (#ecdab9 / #c5a076) */
+@theme {
+  --color-board-light: #ecdab9;
+  --color-board-dark: #c5a076;
+  --color-wood: #8b6f47;
+  --color-wood-dark: #6f5738;
+  --color-ink: #3d3428;
+  --color-muted: #8d7f6d;
+  --color-paper: #faf6ec;
+  --color-parchment: #e8dec8;
+  --color-go: #6b7f4f;
+  --color-go-dark: #59693f;
+  --color-stop: #a5432f;
+  --color-stop-dark: #8a3624;
+}
+
+/* Thick outline for eval */
+@utility text-outline-dark {
+  text-shadow:
+    0 2px 0 var(--color-ink), 0 -2px 0 var(--color-ink),
+    2px 0 0 var(--color-ink), -2px 0 0 var(--color-ink),
+    1.5px 1.5px 0 var(--color-ink), -1.5px 1.5px 0 var(--color-ink),
+    1.5px -1.5px 0 var(--color-ink), -1.5px -1.5px 0 var(--color-ink);
+}
+@utility text-outline-light {
+  text-shadow:
+    0 2px 0 var(--color-paper), 0 -2px 0 var(--color-paper),
+    2px 0 0 var(--color-paper), -2px 0 0 var(--color-paper),
+    1.5px 1.5px 0 var(--color-paper), -1.5px 1.5px 0 var(--color-paper),
+    1.5px -1.5px 0 var(--color-paper), -1.5px -1.5px 0 var(--color-paper);
+}
+
 body {
-  margin: 0;
-  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-parchment);
+  color: var(--color-ink);
   min-height: 100vh;
 }

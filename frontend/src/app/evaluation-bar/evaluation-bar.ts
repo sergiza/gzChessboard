@@ -5,8 +5,7 @@ import { GameStateService } from '../services/game-state';
   selector: 'app-evaluation-bar',
   standalone: true,
   imports: [],
-  templateUrl: './evaluation-bar.html',
-  styleUrl: './evaluation-bar.css'
+  templateUrl: './evaluation-bar.html'
 })
 export class EvaluationBarComponent {
   private gameState = inject(GameStateService);
