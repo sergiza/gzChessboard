@@ -1,5 +1,5 @@
-<div class="mb-5">
-  <div class="flex flex-col gap-1 max-h-[300px] overflow-y-auto" id="moveHistoryContainer">
+<div class="h-full">
+  <div class="flex flex-col gap-1 max-h-full overflow-y-auto" id="moveHistoryContainer">
     @for (pair of movePairs(); track $index) {
       <div class="flex items-center gap-2 font-mono">
         <span class="min-w-[25px] text-board-light/80">{{ $index + 1 }}.</span>
